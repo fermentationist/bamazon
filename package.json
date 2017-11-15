@@ -4,7 +4,6 @@
   "description": "",
   "main": "bamazonCustomer.js",
   "dependencies": {
-    "array-to-table": "^1.0.1",
     "inquirer": "^4.0.0",
     "mysql": "^2.15.0",
     "obj-array-table": "^1.0.6"
