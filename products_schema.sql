@@ -1,4 +1,5 @@
-create schema bamazon;
+drop database if exists bamazon;
+create database bamazon;
 use bamazon;
 create table products (
 	item_id integer(20) not null auto_increment,
