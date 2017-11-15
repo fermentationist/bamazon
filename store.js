@@ -1,4 +1,5 @@
 const StoreModule = (function(){
+	console.log("*StoreModule imported.\n");
 	const mysql = require ("mysql");
 	const inquirer = require ("inquirer");
 	const table = require ("obj-array-table");
@@ -43,7 +44,7 @@ const StoreModule = (function(){
 			let item, itemNum;
 			inquirer.prompt({
 				type: "input",
-				message: "Enter the item id of the product you would like to purchase:",
+				message: "Enter the item id of the product:",
 				name: "selectedItem"
 			}).then(function (answers){
 				itemNum = answers.selectedItem;
@@ -53,10 +54,10 @@ const StoreModule = (function(){
 					return that.chooseQuantity(item, callback);
 				}else if (item){
 					console.log("\nThere is none of that item in stock. Please choose again.\n");
-					return that.chooseItem();
+					return that.chooseItem(callback);
 				}else{
 					console.log("\nInvalid item id number. Please choose again.\n");
-					return that.chooseItem();
+					return that.chooseItem(callback);
 				}
 			});
 		}
@@ -77,13 +78,13 @@ const StoreModule = (function(){
 				}
 				console.log("Sufficient inventory to complete order.");
 				if(callback){
-					return callback(item, amount);
+					return that.placeOrder(item, amount, callback);
 				}
 				return that.connection.end();
 			});
 		}
 
-		this.placeOrder = function(item, quantity){
+		this.placeOrder = function(item, quantity, callback){
 			const itemId = item.item_id;
 			const newQuantity = item.stock_quantity - quantity;
 			const queryString = `UPDATE products SET stock_quantity = ${newQuantity} WHERE item_id = ${itemId}`;
@@ -96,18 +97,19 @@ const StoreModule = (function(){
 				const cost = item.price * parseFloat(quantity);
 				that.tab += cost;
 				console.log("Cost:", cost);
-				return that.displayInventory(that.chooseItem(this.placeOrder));
-
+				setTimeout(function(){
+					if (callback){
+						return that.displayInventory(callback);
+					}
+					return;
+				},3000);
 			});
 		}
 
 
 		
 	}
-	return {Store: Store}
+	return {Store: Store};
 })();
 
-let s = new StoreModule.Store();
-s.displayInventory(s.chooseItem(s.placeOrder));
-
-process.exports = StoreModule;
+module.exports = StoreModule;
