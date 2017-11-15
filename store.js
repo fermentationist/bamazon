@@ -21,7 +21,7 @@ const StoreModule = (function(){
 				}
 				process.stdout.write('\033c');
 				console.log(table.format(results));
-				console.log("\nYour Total Bill:", that.tab.toFixed(2));
+				console.log("\nYour Total Bill: " + that.tab.toFixed(2) + "\n");
 				that.inventorySnapshot = results;
 				if(callback){
 					return callback()
@@ -48,7 +48,6 @@ const StoreModule = (function(){
 				name: "selectedItem"
 			}).then(function (answers){
 				itemNum = answers.selectedItem;
-				console.log('itemNum', itemNum);
 				item = that.lookupItem(that.inventorySnapshot, itemNum);
 				if (item && item.stock_quantity > 0){
 					return that.chooseQuantity(item, callback);
@@ -71,12 +70,11 @@ const StoreModule = (function(){
 				name: "quantity"
 			}).then(function(answers){
 				amount = answers.quantity;
-				console.log(`\nYou have requested ${amount} of ${itemName}`);
+				//console.log(`\nYou have requested ${amount} of ${itemName}`);
 				if(amount > item.stock_quantity){
 					console.log("\nNot enough in stock. Please choose again.\n");
 					return that.chooseQuantity(item, callback);
 				}
-				console.log("Sufficient inventory to complete order.");
 				if(callback){
 					return that.placeOrder(item, amount, callback);
 				}
@@ -88,7 +86,6 @@ const StoreModule = (function(){
 			const itemId = item.item_id;
 			const newQuantity = item.stock_quantity - quantity;
 			const queryString = `UPDATE products SET stock_quantity = ${newQuantity} WHERE item_id = ${itemId}`;
-			console.log('queryString', queryString);
 			that.connection.query(queryString, function(error, results){
 				if(error){
 					throw error;

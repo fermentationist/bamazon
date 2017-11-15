@@ -6,4 +6,3 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 SELECT * FROM bamazon.products;
-SHOW VARIABLES LIKE 'secure_file_priv';
