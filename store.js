@@ -4,6 +4,7 @@ const StoreModule = (function(){
 	const table = require ("obj-array-table");
 	function Store(){
 		const that = this;
+		this.tab = 0;
 		this.inventorySnapshot;
 		this.connection = mysql.createConnection({
 			host: "localhost",
@@ -19,6 +20,7 @@ const StoreModule = (function(){
 				}
 				process.stdout.write('\033c');
 				console.log(table.format(results));
+				console.log("\nYour Total Bill:", that.tab.toFixed(2));
 				that.inventorySnapshot = results;
 				if(callback){
 					return callback()
@@ -77,6 +79,25 @@ const StoreModule = (function(){
 				if(callback){
 					return callback(item, amount);
 				}
+				return that.connection.end();
+			});
+		}
+
+		this.placeOrder = function(item, quantity){
+			const itemId = item.item_id;
+			const newQuantity = item.stock_quantity - quantity;
+			const queryString = `UPDATE products SET stock_quantity = ${newQuantity} WHERE item_id = ${itemId}`;
+			console.log('queryString', queryString);
+			that.connection.query(queryString, function(error, results){
+				if(error){
+					throw error;
+				}
+				console.log(`Successfully placed order for ${quantity} ${item.product_name}.`);
+				const cost = item.price * parseFloat(quantity);
+				that.tab += cost;
+				console.log("Cost:", cost);
+				return that.displayInventory(that.chooseItem(this.placeOrder));
+
 			});
 		}
 
@@ -87,6 +108,6 @@ const StoreModule = (function(){
 })();
 
 let s = new StoreModule.Store();
-s.displayInventory(s.chooseItem());
+s.displayInventory(s.chooseItem(s.placeOrder));
 
 process.exports = StoreModule;
