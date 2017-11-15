@@ -4,6 +4,7 @@ const StoreModule = (function(){
 	const table = require ("obj-array-table");
 	function Store(){
 		const that = this;
+		this.inventorySnapshot;
 		this.connection = mysql.createConnection({
 			host: "localhost",
 			port: 3306,
@@ -18,39 +19,67 @@ const StoreModule = (function(){
 				}
 				process.stdout.write('\033c');
 				console.log(table.format(results));
+				that.inventorySnapshot = results;
 				if(callback){
 					return callback()
 				}
-				return that.connection.end();
+				// return that.connection.end();
 
 			});
 		}
+		this.lookupItem = function(inventoryArray, itemId){
+			let item = null;
+			inventoryArray.forEach(function(product){
+				if (product.item_id === parseInt(itemId)){
+					item = product;
+				}
+			});
+			return item;
+		}
+
 		this.chooseItem = function(callback){
+			let item, itemNum;
 			inquirer.prompt({
 				type: "input",
 				message: "Enter the item id of the product you would like to purchase:",
 				name: "selectedItem"
 			}).then(function (answers){
-				console.log("you have chosen:", answers.selectedItem);
-				if (callback){
-					callback(answers.selectedItem);
+				itemNum = answers.selectedItem;
+				console.log('itemNum', itemNum);
+				item = that.lookupItem(that.inventorySnapshot, itemNum);
+				if (item && item.stock_quantity > 0){
+					return that.chooseQuantity(item, callback);
+				}else if (item){
+					console.log("\nThere is none of that item in stock. Please choose again.\n");
+					return that.chooseItem();
+				}else{
+					console.log("\nInvalid item id number. Please choose again.\n");
+					return that.chooseItem();
 				}
-				return that.connection.end();
 			});
 		}
-		this.quantity = function(selectedItem, callback){
+
+		this.chooseQuantity = function(item, callback){
+			let amount;
+			const itemName = item.product_name;
 			inquirer.prompt({
 				type: "input",
-				message: "How many units would you like?", 
+				message: "Enter the quantity:",
 				name: "quantity"
-			}).then(function(error, results){
-				if(error){
-					throw error;
+			}).then(function(answers){
+				amount = answers.quantity;
+				console.log(`\nYou have requested ${amount} of ${itemName}`);
+				if(amount > item.stock_quantity){
+					console.log("\nNot enough in stock. Please choose again.\n");
+					return that.chooseQuantity(item, callback);
 				}
-				console.log(`You have requested` ${results.quantity} `units of` ${selectedItem}`.`);
+				console.log("Sufficient inventory to complete order.");
+				if(callback){
+					return callback(item, amount);
+				}
 			});
-			return that.connection.end();
 		}
+
 
 		
 	}
@@ -58,6 +87,6 @@ const StoreModule = (function(){
 })();
 
 let s = new StoreModule.Store();
-s.displayInventory(s.chooseItem);
-// s.chooseItem();
+s.displayInventory(s.chooseItem());
+
 process.exports = StoreModule;
