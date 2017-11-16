@@ -1,9 +1,9 @@
-#"Bamazon"
+# "Bamazon"
 
-##a Northwestern University Coding Bootcamp MySQL Assignment
+## a Northwestern University Coding Bootcamp MySQL Assignment
 ___
 
-##Instructions for installation
+## Instructions for installation
 
 This Node.js command-line interface app is intended as an exercise in using Node to read and write information from a MySQL database. The SQL script used to create the sample database has been included.
 
@@ -22,7 +22,7 @@ Finally, you can run the application by typing `node bamazonCustomer.js`.
 
 ___
 ___
-###the original assignment follows below
+### the original assignment follows below
 ___
 ___
 # Node.js & MySQL
