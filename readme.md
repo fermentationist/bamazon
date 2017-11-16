@@ -1,5 +1,6 @@
 #"Bamazon"
-##–a Northwestern University Coding Bootcamp MySQL Assignment
+
+##a Northwestern University Coding Bootcamp MySQL Assignment
 ___
 
 ##Instructions for installation
@@ -17,7 +18,7 @@ Once you have created a MySQL database using `products_schema.sql`, you may popu
 Finally, you can run the application by typing `node bamazonCustomer.js`.
 
 
-![bamazon sample gif]("/example.gif")
+![bamazon sample gif](https://github.com/fermentationist/bamazon/raw/master/example.gif)
 
 ___
 ___
