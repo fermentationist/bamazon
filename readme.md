@@ -1,6 +1,6 @@
 # "Bamazon"
 
-## a Northwestern University Coding Bootcamp MySQL Assignment
+## an Assignment Using MySQL and Node.js
 ___
 
 ## Instructions for installation
