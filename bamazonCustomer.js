@@ -6,7 +6,7 @@ const bamazon = new StoreModule.Store();
 function inquire(){
 	inquirer.prompt({
 		type: "list",
-		message: "Select an option to continue:",
+		message: "Select an option to continue:", 
 		choices: ["Purchase items", "Quit"],
 		name: "menuChoice"
 	}).then(function(answer){
