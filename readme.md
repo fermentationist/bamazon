@@ -17,7 +17,7 @@ Once you have created a MySQL database using `products_schema.sql`, you may popu
 Finally, you can run the application by typing `node bamazonCustomer.js`.
 
 
-
+![bamazon sample gif]("/example.gif")
 
 ___
 ___
