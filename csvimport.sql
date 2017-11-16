@@ -1,5 +1,6 @@
 USE bamazon;
-LOAD DATA LOCAL INFILE '/Users/fermentationist/Library/Mobile Documents/com~apple~CloudDocs/Documents/GitHub/bamazon/Untitled.csv'
+-- You will need to complete the file path below to this repo's location on your machine...
+LOAD DATA LOCAL INFILE '/PhonyProducts.csv'
 INTO TABLE products 
 FIELDS TERMINATED BY ',' 
 ENCLOSED BY '"'

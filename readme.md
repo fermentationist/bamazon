@@ -1,10 +1,27 @@
 #"Bamazon"
 ##–a Northwestern University Coding Bootcamp MySQL Assignment
+___
+
+##Instructions for installation
+
+This Node.js command-line interface app is intended as an exercise in using Node to read and write information from a MySQL database. The SQL script used to create the sample database has been included.
+
+To run this application, you will need to have Node.js (with Node Package Manager) and MySQL installed on your machine. I also used MySQL Workbench to manipulate and view the database, which was very helpful.
+
+After cloning or downloading the repository to your local machine, you will need to run the command `npm install` from inside the cloned directory, which will create a `node_modules` folder, and install the necessary packages.
+
+You will also need to include your MySQL password in the `app-env` file, in place of `"passwordstring"`, and save it. Then to make the password available as a global environment variable, type `source app-env` from the command-line.
+
+Once you have created a MySQL database using `products_schema.sql`, you may populate it with sample data using the provided csv and script files – `PhonyProducts.csv` and `csvimport.sql`. Before running `csvimport.sql`, you will need to edit it to change the filepath for `PhonyProducts.csv`'s location on your machine.
+
+Finally, you can run the application by typing `node bamazonCustomer.js`.
+
+
 
 
 ___
 ___
-###the original assignment follows
+###the original assignment follows below
 ___
 ___
 # Node.js & MySQL
